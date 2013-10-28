@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B12B2BA4-D96E-47AE-A3D7-2A40B9B18950}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PopulationSimulator</RootNamespace>
+    <AssemblyName>PopulationSimulator</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DlmIO, Version=2.0.5.0, Culture=neutral, PublicKeyToken=b1f04c18ec875148, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Sho 2.0 for .NET 4\bin\DlmIO.dll</HintPath>
+    </Reference>
+    <Reference Include="EmbeddedSho, Version=2.0.5.27, Culture=neutral, PublicKeyToken=314a316d4cfb815d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Sho 2.0 for .NET 4\bin\EmbeddedSho.dll</HintPath>
+    </Reference>
+    <Reference Include="Infer.Compiler">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Microsoft Research\Infer.NET 2.4 Beta\bin\Release\Infer.Compiler.dll</HintPath>
+    </Reference>
+    <Reference Include="Infer.Runtime">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Microsoft Research\Infer.NET 2.4 Beta\bin\Release\Infer.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="MathFunc, Version=2.0.5.0, Culture=neutral, PublicKeyToken=af39242306d6159d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Sho 2.0 for .NET 4\bin\MathFunc.dll</HintPath>
+    </Reference>
+    <Reference Include="MathNet.Numerics">
+      <HintPath>MathNet.Numerics-2.2.1.24\Net40\MathNet.Numerics.dll</HintPath>
+    </Reference>
+    <Reference Include="MathNet.Numerics.FSharp">
+      <HintPath>MathNet.Numerics-2.2.1.24\Net40\MathNet.Numerics.FSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="MathNet.Numerics.IO">
+      <HintPath>MathNet.Numerics-2.2.1.24\Net40\MathNet.Numerics.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="MatrixInterf, Version=2.0.5.0, Culture=neutral, PublicKeyToken=1fa71b5ffec10e32, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Sho 2.0 for .NET 4\bin\MatrixInterf.dll</HintPath>
+    </Reference>
+    <Reference Include="PythonExt, Version=2.0.5.27, Culture=neutral, PublicKeyToken=f5389a9189cccc85, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Sho 2.0 for .NET 4\bin\PythonExt.dll</HintPath>
+    </Reference>
+    <Reference Include="Rand, Version=2.0.5.0, Culture=neutral, PublicKeyToken=af26ffbb175a1abe, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Sho 2.0 for .NET 4\bin\Rand.dll</HintPath>
+    </Reference>
+    <Reference Include="ShoArray, Version=2.0.5.0, Culture=neutral, PublicKeyToken=1635376d5e62ab5f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Sho 2.0 for .NET 4\bin\ShoArray.dll</HintPath>
+    </Reference>
+    <Reference Include="ShoDB, Version=2.0.5.0, Culture=neutral, PublicKeyToken=44bfc57d893eaf85, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Sho 2.0 for .NET 4\bin\ShoDB.dll</HintPath>
+    </Reference>
+    <Reference Include="ShoPickleHelper, Version=2.0.5.27, Culture=neutral, PublicKeyToken=bfb3ad4f5710911f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Sho 2.0 for .NET 4\bin\ShoPickleHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="ShoViz, Version=2.0.5.0, Culture=neutral, PublicKeyToken=14eb30934789ddca, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Sho 2.0 for .NET 4\bin\ShoViz.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="utils, Version=2.0.5.0, Culture=neutral, PublicKeyToken=f71603a15f22664a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Sho 2.0 for .NET 4\bin\utils.dll</HintPath>
+    </Reference>
+    <Reference Include="zlib.net">
+      <HintPath>MathNet.Numerics-2.2.1.24\Net40\zlib.net.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BeneficialMutationRate.cs" />
+    <Compile Include="CollectionOfData.cs" />
+    <Compile Include="CreateData.cs" />
+    <Compile Include="MutationCounter.cs" />
+    <Compile Include="PerformanceExtensions.cs" />
+    <Compile Include="PopulationSimulator.cs" />
+    <Compile Include="DiscretizedDFE.cs" />
+    <Compile Include="GibbsSampler.cs" />
+    <Compile Include="MultinomialSampler.cs" />
+    <Compile Include="ObservedWell.cs" />
+    <Compile Include="OlderCode.cs" />
+    <Compile Include="OlderPopulationSimulator.cs" />
+    <Compile Include="PopulationSize.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ThreadSafeRandomGenerator.cs" />
+    <Compile Include="SimulationTimesAndFitnesses.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

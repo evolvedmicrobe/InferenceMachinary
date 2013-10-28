@@ -1,0 +1,17 @@
+*.dll
+*.exe
+*.pdb
+*.pdf
+*.graphml
+*.csv
+*.java
+*.jar
+*.mdb
+TemporaryGeneratedFile*
+*.class
+PopulationSimulator/bin/*
+lib/*.xml
+/lib/Infer.NET_2.5\*
+lib/Infer.NET_2.5/
+*/obj/*
+*/bin/*
