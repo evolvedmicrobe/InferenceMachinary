@@ -13,7 +13,7 @@ namespace PopulationSimulator
         {
             string direc= @"C:\Users\Clarity\Documents\My Dropbox\EvolutionExperimentDB\Analysis\";
              direc = @"D:\Dropbox\EvolutionExperimentDB\Analysis\";
-            string file = direc + "FitnessesFixed.csv";
+            string file = direc + "FitnessesFixed2.csv";
             StreamReader SR = new StreamReader(file);
             string line;
             dfe = new DiscretizedDFE(.0625,.25, 7);
@@ -28,6 +28,10 @@ namespace PopulationSimulator
             while ((line = SR.ReadLine()) != null)
             {
                 count++;
+                if (count == 1)
+                {
+                    continue;
+                }
                 string[] sp = line.Split(',');
                 int Size=Convert.ToInt32(sp[1]);
                 double fitness = Convert.ToDouble(sp[2]);

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ShoNS.Array;
-using ShoNS.MathFunc;
-using MicrosoftResearch.Infer.Distributions;
 
+//using ShoNS.Array;
+//using ShoNS.MathFunc;
+//using MicrosoftResearch.Infer.Distributions;
 //namespace PopulationSimulator
 //{
 //    class OlderCode
