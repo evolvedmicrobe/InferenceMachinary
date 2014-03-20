@@ -93,6 +93,7 @@ namespace PopulationSimulator
 		/// <returns></returns>
 		public int GetRandomBinAssignment ()
 		{
+
 			double d = RandomVariateGenerator.NextDouble ();
 			for (int i = 0; i < cumProbs.Length; i++) {
 				if (d < cumProbs [i])

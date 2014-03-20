@@ -20,8 +20,8 @@ namespace PopulationSimulator
         int curRep;
         void Initialize()
         {
-            //ObsData = DataCreator.CreateData();
-            ObsData = DataCreator.LoadData();
+            ObsData = DataCreator.CreateData();
+            //ObsData = DataCreator.LoadData();
             dfe = DataCreator.dfe;
             mu = new BeneficialMutationRate();   
         }

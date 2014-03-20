@@ -64,15 +64,20 @@ namespace PopulationSimulator
         {
             double curPopSize = PopSizes.Sum();
             double[] freqs = PopSizes.ElementDivide(curPopSize);
-
+            //sum Freq*Fitness
             double meanFitnessStart = freqs.ElementMulitplyAndSum(popRelativeFitnesses);
+            //how much growth occurs
             double GrowthTime = Math.Log(NF / curPopSize) / (meanFitnessStart);
             //First Handle Mutations
             double[] newMuts = new double[PopSizes.Length];
-            double[] FinalPopSize = PopSizes.ElementMultiply(popRelativeFitnesses.ElementMultiply(GrowthTime).Exp());
-            double[] MeanMutations = FinalPopSize.ElementSubtract(PopSizes).ElementMultiply(mu.rate);
-
-            double timeForPoisson = FinalPopSize.ElementSubtract(PopSizes).Sum();
+            //double[] FinalPopSize = PopSizes.ElementMultiply(popRelativeFitnesses.ElementMultiply(GrowthTime).Exp());
+            double[] FinalPopSize = PerformanceExtensions.Element_A_Times_E_ToThe_RT(PopSizes,popRelativeFitnesses,GrowthTime);
+            
+            //double[] MeanMutations = FinalPopSize.ElementSubtract(PopSizes).ElementMultiply(mu.rate);
+            double[] MeanMutations = FinalPopSize.ElementSubtractAndMultiplyByConstant(PopSizes,mu.rate);
+            
+            //Sum of N_f- N_0
+            double timeForPoisson = FinalPopSize.SummedDifference(PopSizes);
 
             TotalTime += timeForPoisson;
             double MutantGrowth = 0.0;
@@ -85,7 +90,6 @@ namespace PopulationSimulator
                     double meanMutForClass = MeanMutations[i];
                     //Sample
                     int mutNumber = RandomVariateGenerator.PoissonSample(meanMutForClass);
-
                     //Get the maximum time on the rescaled valued, and subtract one as it ranges from 1 to this high value, so this
                     //will be the multiplication factor
                     double maxRescaled = Math.Exp(GrowthTime * dfe.MidPoints[i]) - 1.0;
@@ -94,7 +98,6 @@ namespace PopulationSimulator
                     {
                         double uniformTime = 1.0 + RandomVariateGenerator.NextDouble() * maxRescaled;
                         //Convert back
-
                         double actualTime = Math.Log(uniformTime) / dfe.MidPoints[i];
                         int w = dfe.GetRandomBinAssignment();
                         MutCounter.CountOfEachMutation[w]++;
@@ -128,14 +131,14 @@ namespace PopulationSimulator
             PopSizes = newMuts.ElementAdd(FinalPopSize);
 
             //DoubleArray expectNumber = N0 * (PopSizes / PopSizes.Sum());
-            double[] expectNumber = PopSizes.ElementDivide(PopSizes.Sum()).ElementMultiply(N0);
+            //double[] expectNumber = PopSizes.ElementDivide(PopSizes.Sum()).ElementMultiply(N0);
+            double[] expectNumber = PopSizes.ElementDivide(PopSizes.Sum()/N0);//
 
             //Now sample
-            double Size = expectNumber.Sum();
             for (int i = 0; i < PopSizes.Length; i++)
             {
                 if (PopSizes[i] > 0)
-                {//PopSizes[i]=Poisson.Sample(expectNumber[i]);     
+                {
                     PopSizes[i] = RandomVariateGenerator.PoissonSample((double)expectNumber[i]);
                 }
             }
