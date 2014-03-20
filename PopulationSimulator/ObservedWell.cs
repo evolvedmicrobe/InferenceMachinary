@@ -13,7 +13,10 @@ namespace PopulationSimulator
         public double ObservedFitness;
         public double AmountOfTimeLastRun = 0;
         public int NumberOfSimulationsLastRun = 0;
-       // public List<TimeFitnessClass> CurrentMissingData=new List<TimeFitnessClass>(1);
+        /// <summary>
+        /// A class that keeps track of all the mutations that have been observed in this well from each bin.
+        /// Used to update the prior.
+        /// </summary>
         public MutationCounter MutCounter;
         public int binClass;
         public double TotalGenerations

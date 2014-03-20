@@ -13,6 +13,7 @@ namespace PopulationSimulator
         {
             string direc= @"C:\Users\Clarity\Documents\My Dropbox\EvolutionExperimentDB\Analysis\";
              direc = @"D:\Dropbox\EvolutionExperimentDB\Analysis\";
+             direc = @"C:\Users\Nigel\Documents\My Dropbox\EvolutionExperimentDB\Analysis\";
             string file = direc + "FitnessesFixed2.csv";
             StreamReader SR = new StreamReader(file);
             string line;
@@ -35,18 +36,22 @@ namespace PopulationSimulator
                 string[] sp = line.Split(',');
                 int Size=Convert.ToInt32(sp[1]);
                 double fitness = Convert.ToDouble(sp[2]);
+                double numTransfers = 256;
                 if (Size == 1)
+                {
                     curps = ps1;
+                    numTransfers = 126;
+                }
                 else
                     curps = ps2;
-                int NumrTransfers = Convert.ToInt32(sp[3]);
-                ObservedWell ow = new ObservedWell(NumrTransfers, fitness, dfe, curps);
+                //int NumrTransfers = Convert.ToInt32(sp[3]);
+                ObservedWell ow = new ObservedWell(numTransfers, fitness, dfe, curps);
                 if (Size == 1)
                 { MC1.AddCountToClass(1, ow.binClass); }
                 else { MC2.AddCountToClass(1, ow.binClass); ; }
                 Console.WriteLine(String.Join("\t", MC1.CountOfEachMutation.Select(x => x.ToString())));
                 data.Add(ow);
-                Console.WriteLine(sp[4] + " - " + ow.binClass.ToString());
+                Console.WriteLine(sp[3] + " - " + ow.binClass.ToString());
             }
             SR.Close();
            
@@ -66,17 +71,17 @@ namespace PopulationSimulator
             PopulationSize ps2 = new PopulationSize(1.03e4, 4.22e7);
             for (int i = 0; i < 47; i++)
             {
-                ObservedWell ow = new ObservedWell(21, .225 + ThreadSafeRandomGenerator.NextDouble() * .01,dfe,ps2);
+                ObservedWell ow = new ObservedWell(21, .225 + RandomVariateGenerator.NextDouble() * .01,dfe,ps2);
                 data.Add(ow);
             }
             for (int i = 47; i < 96; i++)
             {
-                ObservedWell ow = new ObservedWell(21, ThreadSafeRandomGenerator.NextDouble() * .01, dfe, ps2);
+                ObservedWell ow = new ObservedWell(21, RandomVariateGenerator.NextDouble() * .01, dfe, ps2);
                 data.Add(ow);
             }
             for (int i = 0; i < 86; i++)
             {
-                ObservedWell ow = new ObservedWell(21, .225 + ThreadSafeRandomGenerator.NextDouble() * .01, dfe, ps1);
+                ObservedWell ow = new ObservedWell(21, .225 + RandomVariateGenerator.NextDouble() * .01, dfe, ps1);
                 data.Add(ow);
             }
             return data;

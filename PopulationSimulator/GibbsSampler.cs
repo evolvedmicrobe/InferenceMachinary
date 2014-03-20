@@ -16,7 +16,6 @@ namespace PopulationSimulator
         public DiscretizedDFE dfe;
         List<ObservedWell> ObsData;
         const string SEPERATOR = "\t";
-        public static ThreadSafeRandomGeneratorInstance rnd = new ThreadSafeRandomGeneratorInstance();
         PopulationSimulator ps;
         int curRep;
         void Initialize()
@@ -70,6 +69,11 @@ namespace PopulationSimulator
             SW.Flush();
         }
         private double initRate = 7.5e-8;
+        /// <summary>
+        /// Initialize a new gibbs sampler.
+        /// </summary>
+        /// <param name="outputName"></param>
+        /// <param name="StartRate"></param>
         public GibbsSampler(string outputName="Results.Log", double StartRate=7.5e-8)
         {
             Initialize();
@@ -80,10 +84,12 @@ namespace PopulationSimulator
         public void Run()
         {   
             int reps = 10000000;
-            ObsData[0].MutCounter.AddCountToClass(30, 1);
-            ObsData[0].MutCounter.AddCountToClass(30, 2);
-            dfe.UpdateWithNewSamples(ObsData);
-           
+
+            //TODO: Pseudo counts were added here, presumably to give some mass in the bottom?
+            //ObsData[0].MutCounter.AddCountToClass(30, 1);
+            //ObsData[0].MutCounter.AddCountToClass(30, 2);
+            ///Sample a new multinomial from a direchlet based on these values
+            dfe.UpdateWithNewSamples(ObsData);           
             mu.rate = initRate;
             DateTime dt = DateTime.Now;
             for (curRep = 0; curRep< reps; curRep++)
@@ -95,7 +101,8 @@ namespace PopulationSimulator
                 }
                 //CAN'T RUN IN PARALLEL AS POISSON IS NOT THREAD SAFE
                 //Think I made it thread safe with new sampler
-                ObsData.ForEach(x=>ps.SimulateWell(x));
+                //ObsData.ForEach(x=>ps.SimulateWell(x));
+                Parallel.ForEach(ObsData, x => ps.SimulateWell(x));
                 if (curRep % 5 == 0)
                 { OutputState(); }
                 if(curRep%5==0)

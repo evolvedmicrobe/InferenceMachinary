@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MicrosoftResearch.Infer.Distributions;
 using System.Threading;
-
 namespace PopulationSimulator
 {
 	public class PopulationSimulator
@@ -137,14 +135,14 @@ namespace PopulationSimulator
 						//Determine the mean number of mutations
 						double meanMutForClass = MeanMutations [i];
 						//Sample
-                        int mutNumber = Poisson.Sample(meanMutForClass);                           
+                        int mutNumber = RandomVariateGenerator.PoissonSample(meanMutForClass);                           
                         
 						//Get the maximum time on the rescaled valued, and subtract one as it ranges from 1 to this high value, so this
 						//will be the multiplication factor
 						double maxRescaled = Math.Exp (GrowthTime * dfe.MidPoints [i]) - 1.0;
 						//Now generate a mutation for each class
 						for (int j = 0; j < mutNumber; j++) {
-							double uniformTime = 1.0 + ThreadSafeRandomGenerator.NextDouble () * maxRescaled;
+							double uniformTime = 1.0 + RandomVariateGenerator.NextDouble() * maxRescaled;
 							//Convert back
                            
 							double actualTime = Math.Log (uniformTime) / dfe.MidPoints [i];
@@ -182,7 +180,7 @@ namespace PopulationSimulator
 				double Size = expectNumber.Sum ();
 				for (int i = 0; i < PopSizes.Length; i++) {
 					if (PopSizes [i] > 0) {//PopSizes[i]=Poisson.Sample(expectNumber[i]);     
-						PopSizes [i] = Poisson.Sample ((double)expectNumber [i]);
+						PopSizes [i] = RandomVariateGenerator.PoissonSample((double)expectNumber [i]);
 					}
 				}                               
 			}
@@ -212,14 +210,14 @@ namespace PopulationSimulator
 						//Determine the mean number of mutations
 						double meanMutForClass = MeanMutations [i];
 						//Sample
-						int mutNumber = Poisson.Sample (meanMutForClass);
+						int mutNumber = RandomVariateGenerator.PoissonSample(meanMutForClass);
 
 						//Get the maximum time on the rescaled valued, and subtract one as it ranges from 1 to this high value, so this
 						//will be the multiplication factor
 						double maxRescaled = Math.Exp (GrowthTime * dfe.MidPoints [i]) - 1.0;
 						//Now generate a mutation for each class
 						for (int j = 0; j < mutNumber; j++) {
-							double uniformTime = 1.0 + ThreadSafeRandomGenerator.NextDouble () * maxRescaled;
+							double uniformTime = 1.0 + RandomVariateGenerator.NextDouble() * maxRescaled;
 							//Convert back
 
 							double actualTime = Math.Log (uniformTime) / dfe.MidPoints [i];
@@ -256,7 +254,7 @@ namespace PopulationSimulator
 				double Size = expectNumber.Sum ();
 				for (int i = 0; i < PopSizes.Length; i++) {
 					if (PopSizes [i] > 0) {//PopSizes[i]=Poisson.Sample(expectNumber[i]);     
-						PopSizes [i] = Poisson.Sample (expectNumber [i]);
+						PopSizes [i] = RandomVariateGenerator.PoissonSample(expectNumber [i]);
 					}
 				}
 			}

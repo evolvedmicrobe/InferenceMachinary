@@ -6,8 +6,6 @@ using System.Text;
 using ShoNS.Array;
 
 using ShoNS.MathFunc;
-using MicrosoftResearch.Infer.Distributions;
-using MicrosoftResearch.Infer.Maths;
 using System.Runtime.InteropServices;
 
 namespace PopulationSimulator
@@ -85,7 +83,7 @@ namespace PopulationSimulator
 		/// <returns></returns>
 		public int GetRandomBinAssignment ()
 		{
-			double d = ThreadSafeRandomGenerator.NextDouble ();
+			double d = RandomVariateGenerator.NextDouble ();
 			for (int i = 0; i < cumProbs.Length; i++) {
 				if (d < cumProbs [i])
 					return i + 1;
@@ -110,13 +108,6 @@ namespace PopulationSimulator
 			DoubleArray da = DoubleArray.From (ClassProbabilities);
 			cumProbs = da.CumSum (DimOp.OverCol).ToArray ();
 
-			//for (int i = 0; i < cumProbs.Length; i++)
-			//{
-			//    *(prtCumProbArrayStart + i) = cumProbs[i];
-			//}
-
-			//Much better results with the ShoNS for this
-			//cumProbs = ClassProbabilities.CumSum();
 		}
 		//Fitness is s, where s is (r0+s)/r0;
 		public int AssignFitnessToBin (double W)
@@ -146,9 +137,7 @@ namespace PopulationSimulator
 			for (int i = 0; i < counts.Length; i++) {
 				counts [i] = (double)MC.CountOfEachMutation [i + 1] + .1;
 			}
-			Dirichlet d = new Dirichlet (counts);
-			Vector v = d.Sample ();
-			ClassProbabilities = v.ToArray ();
+            ClassProbabilities = RandomVariateGenerator.DirichletSample(counts);
 			CreateCumulativeProbs ();
 			PointMass = false;
 		}
@@ -209,7 +198,7 @@ namespace PopulationSimulator
 		/// <returns></returns>
 		public int GetRandomBinAssignment ()
 		{
-			double d = ThreadSafeRandomGenerator.NextDouble ();
+			double d = RandomVariateGenerator.NextDouble ();
         
 			for (int i = 0; i < cumProbs.Length; i++) {
 				if (d < cumProbs [i])

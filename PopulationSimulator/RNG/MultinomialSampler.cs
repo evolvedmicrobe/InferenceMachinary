@@ -23,7 +23,7 @@ namespace PopulationSimulator
 
 		public int GetRandomSample ()
 		{
-			double d = ThreadSafeRandomGenerator.NextDouble ();
+			double d = RandomVariateGenerator.NextDouble();
 			return (from x in Enumerable.Range (0, probs.Length)
 			        where d < probs [x]
 			        select x).First ();  

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using MicrosoftResearch.Infer.Distributions;
 namespace PopulationSimulator
 {
 	public struct TimeFitnessClass
@@ -20,16 +19,14 @@ namespace PopulationSimulator
 		{
 			this.dfe = dfe;
 		}
-		//Don't recreate, possibly should upgrade to sho? This is not mersenne, but based on something
-		public Random r = new Random ();
-
+	
 		public List<TimeFitnessClass> SimulateMutations (double rate, ObservedWell well)
 		{
-			Poisson p = new Poisson (rate * well.TotalTransfers * well.PopSize.GenerationsInBetweenTransfers);
-			int mutNumber = p.Sample ();
+			double lambda=rate * well.TotalTransfers * well.PopSize.GenerationsInBetweenTransfers;
+			int mutNumber = RandomVariateGenerator.PoissonSample(lambda);
 			List<TimeFitnessClass> classes = new List<TimeFitnessClass> ();
 			for (int i = 0; i < classes.Count; i++) {
-				double time = r.NextDouble () * well.TotalGenerations;
+				double time = RandomVariateGenerator.NextDouble () * well.TotalGenerations;
 				int w = dfe.GetRandomBinAssignment ();
 				TimeFitnessClass tfc = new TimeFitnessClass (){ time = time, Class = w };
 				classes.Add (tfc);

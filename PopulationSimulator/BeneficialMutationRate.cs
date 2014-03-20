@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MicrosoftResearch.Infer.Distributions;
 
 namespace PopulationSimulator
 {
@@ -24,11 +23,9 @@ namespace PopulationSimulator
 			double percDif = dif / totalTime;
 			//Sample a new mu
 			//Gamma is parameterized with shape and scale
-			rate = Gamma.Sample (priorAlpha + totalMutations, 1.0 / (priorBeta + totTime2));
-			//Console.WriteLine("MEAN: ");
-			//Console.WriteLine((priorAlpha + totalMutations) / (priorBeta + totalTime));
-            
-			//Console.WriteLine(totalMutations.ToString());
+            rate = RandomVariateGenerator.GammaSample(priorAlpha + totalMutations, 1.0 / (priorBeta + totTime2));
+            //Former code from Infer.Net, took shape and scale.            
+			//rate = Gamma.Sample (priorAlpha + totalMutations, 1.0 / (priorBeta + totTime2));
 		}
 	}
 }

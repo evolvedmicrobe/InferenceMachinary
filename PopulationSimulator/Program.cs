@@ -10,6 +10,10 @@ namespace PopulationSimulator
 {
     class Program
     {
+        /// <summary>
+        /// Main program which loads and runs the code.
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
            // PosteriorSimulations2();
@@ -29,7 +33,8 @@ namespace PopulationSimulator
         static void PosteriorSimulations2()
         {
             int numberOfTransfers = 21;
-            StreamWriter SW = new StreamWriter(@"D:\Dropbox\EvolutionExperimentDB\Analysis\TimeFor90PercFixation.csv");
+            //StreamWriter SW = new StreamWriter(@"D:\Dropbox\EvolutionExperimentDB\Analysis\TimeFor90PercFixation.csv");
+            StreamWriter SW = new StreamWriter(@"C:\Users\Nigel\Documents\My Dropbox\EvolutionExperimentDB\Analysis\TimeFor90PercFixation.csv");
             PopulationSize ps = new PopulationSize(1.03e4, 4.22e7);
             BeneficialMutationRate mu = new BeneficialMutationRate();
             DiscretizedDFE dfe = new DiscretizedDFE(.0625, .25, 7);
