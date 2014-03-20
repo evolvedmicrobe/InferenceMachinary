@@ -24,6 +24,19 @@ namespace PopulationSimulator
             }
             return toR;
         }
+
+        public static double ElementMulitplyAndSum(this double[] x, double[] y)
+        {
+            double toR = 0.0;
+            if (x.Length != y.Length)
+            { throw new Exception("Cannot Multiply And Sum Vectors of Unequal Length"); }
+            for (int i = 0; i < x.Length; i++)
+            {
+                toR += x[i] * y[i];
+            }
+            return toR;
+        }
+
         public static double[] ElementMultiply(this double[] x, double y)
         {
            double[] toR = new double[x.Length];
@@ -50,6 +63,17 @@ namespace PopulationSimulator
             for (int i = 0; i < x.Length; i++)
             {
                 toR[i] = x[i] - y[i];
+            }
+            return toR;
+        }
+        public static double ElementSubtractAndSum(this double[] x, double[] y)
+        {
+            if (x.Length != y.Length)
+            { throw new Exception("Cannot Subtract and Sum Vectors of Unequal Length"); }
+            double toR =0;
+            for (int i = 0; i < x.Length; i++)
+            {
+                toR -= x[i] - y[i];
             }
             return toR;
         }

@@ -118,7 +118,7 @@ namespace PopulationSimulator
 				double curPopSize = PopSizes.Sum ();
 				double[] freqs = PopSizes.ElementDivide (curPopSize);
                 
-				double meanFitnessStart = freqs.ElementMultiply (popRelativeFitnesses).Sum ();
+				double meanFitnessStart = freqs.ElementMulitplyAndSum(popRelativeFitnesses);
 				double GrowthTime = Math.Log (NF / curPopSize) / (meanFitnessStart);
 				//First Handle Mutations
 				double[] newMuts = new double[PopSizes.Length];
@@ -198,7 +198,7 @@ namespace PopulationSimulator
 				double[] MeanMutations = FinalPopSize.ElementSubtract (PopSizes).ElementMultiply (mu.rate);
 
 				//double timeForPoisson = (FinalPopSize - PopSizes).Sum();
-				double timeForPoisson = FinalPopSize.ElementSubtract (PopSizes).Sum ();
+				double timeForPoisson = FinalPopSize.ElementSubtractAndSum (PopSizes);
 
 				TotalTime += timeForPoisson;
 				double MutantGrowth = 0.0;
@@ -248,7 +248,8 @@ namespace PopulationSimulator
 				//PopSizes = newMuts + FinalPopSize;
 				PopSizes = newMuts.ElementAdd (FinalPopSize);
 
-				double[] expectNumber = PopSizes.ElementDivide (PopSizes.Sum ()).ElementMultiply (N0);
+				//double[] expectNumber = PopSizes.ElementDivide (PopSizes.Sum ()).ElementMultiply (N0);
+                double[] expectNumber = PopSizes.ElementDivide(PopSizes.Sum()/N0);//.ElementMultiply(N0);
 
 				//Now sample
 				double Size = expectNumber.Sum ();

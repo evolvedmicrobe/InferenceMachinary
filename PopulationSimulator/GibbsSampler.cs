@@ -86,12 +86,15 @@ namespace PopulationSimulator
             int reps = 10000000;
 
             //TODO: Pseudo counts were added here, presumably to give some mass in the bottom?
-            //ObsData[0].MutCounter.AddCountToClass(30, 1);
-            //ObsData[0].MutCounter.AddCountToClass(30, 2);
+            ObsData[0].MutCounter.AddCountToClass(30, 1);
+            ObsData[0].MutCounter.AddCountToClass(30, 2);
             ///Sample a new multinomial from a direchlet based on these values
             dfe.UpdateWithNewSamples(ObsData);           
             mu.rate = initRate;
             DateTime dt = DateTime.Now;
+            ParallelOptions po = new ParallelOptions();
+            po.MaxDegreeOfParallelism = Environment.ProcessorCount * 2;
+           
             for (curRep = 0; curRep< reps; curRep++)
             {
                 if (curRep > 0)
@@ -99,10 +102,7 @@ namespace PopulationSimulator
                     mu.SampleRate(ObsData);
                     dfe.UpdateWithNewSamples(ObsData);
                 }
-                //CAN'T RUN IN PARALLEL AS POISSON IS NOT THREAD SAFE
-                //Think I made it thread safe with new sampler
-                //ObsData.ForEach(x=>ps.SimulateWell(x));
-                Parallel.ForEach(ObsData, x => ps.SimulateWell(x));
+                Parallel.ForEach(ObsData, po,x => ps.SimulateWell(x));
                 if (curRep % 5 == 0)
                 { OutputState(); }
                 if(curRep%5==0)
