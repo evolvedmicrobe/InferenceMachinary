@@ -43,7 +43,6 @@ namespace PopulationSimulator
             double rate = 4.08e-7;
             mu.rate = rate;
             dfe.ClassProbabilities = posteriorModeFreqs;
-            dfe.CreateCumulativeProbs();
             PopulationSize pop = ps;  
             SW.WriteLine("Time");
             for (int reps = 0; reps < 10000; reps++)

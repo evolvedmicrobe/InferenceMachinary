@@ -38,18 +38,6 @@
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MathFunc, Version=2.0.5.0, Culture=neutral, PublicKeyToken=af39242306d6159d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\MathFunc.dll</HintPath>
-    </Reference>
-    <Reference Include="MatrixInterf, Version=2.0.5.0, Culture=neutral, PublicKeyToken=1fa71b5ffec10e32, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\MatrixInterf.dll</HintPath>
-    </Reference>
-    <Reference Include="ShoArray, Version=2.0.5.0, Culture=neutral, PublicKeyToken=1635376d5e62ab5f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\ShoArray.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
@@ -69,8 +57,8 @@
     <Compile Include="GibbsSampler.cs" />
     <Compile Include="RNG\MultinomialSampler.cs" />
     <Compile Include="ObservedWell.cs" />
-    <Compile Include="OlderCode.cs" />
-    <Compile Include="OlderPopulationSimulator.cs" />
+    <Compile Include="Old\OlderCode.cs" />
+    <Compile Include="Old\OlderPopulationSimulator.cs" />
     <Compile Include="PopulationSize.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -85,6 +73,9 @@
       <Project>{b7cae5f4-a23f-4438-b5be-41226618b695}</Project>
       <Name>Numerics</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DataSimulation\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

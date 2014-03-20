@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using ShoNS.Array;
+//using ShoNS.Array;
 
-using ShoNS.MathFunc;
+//using ShoNS.MathFunc;
+
 using System.Runtime.InteropServices;
 
 namespace PopulationSimulator
@@ -17,10 +18,21 @@ namespace PopulationSimulator
 		/// 0 to N, GROWTH RATES! Not fitness per say
 		/// </summary>
 		public double[] MidPoints;
-		/// <summary>
+
+        protected double[] _pClassProbabilities;
+        /// <summary>
 		/// 1 to N
 		/// </summary>
-		public double[] ClassProbabilities;
+        
+		public double[] ClassProbabilities 
+        {
+            get{return _pClassProbabilities;}
+            set{
+                _pClassProbabilities=value;
+                cumProbs = new double[_pClassProbabilities.Length];
+                CreateCumulativeProbs();
+            }
+        }
 		/// <summary>
 		/// 1 to N
 		/// </summary>
@@ -42,7 +54,7 @@ namespace PopulationSimulator
 			this.min = min;
 			this.max = (1 + max) * PopulationSimulator.ANCESTRALGROWTHRATE;
 			this.MidPoints = new double[NumberBins + 1];
-			ClassProbabilities = new double[NumberBins];
+			_pClassProbabilities = new double[NumberBins];
 			cumProbs = new double[NumberBins];
 			double interval = (max - min) / NumberBins;
 			MidPoints [1] = min + interval / 2.0;
@@ -62,8 +74,6 @@ namespace PopulationSimulator
 			this.max = (1 + max) * PopulationSimulator.ANCESTRALGROWTHRATE;
 			this.MidPoints = new double[NumberBins + 1];
 			ClassProbabilities = new double[NumberBins];
-			cumProbs = new double[NumberBins];
-			// CreateCumProbArray(NumberBins);
 			double interval = max / NumberBins;
 			MidPoints [1] = interval / 2.0;
 			//Make a list of relative fitness improvements
@@ -88,27 +98,31 @@ namespace PopulationSimulator
 				if (d < cumProbs [i])
 					return i + 1;
 			}
-			//int length = cumProbs.Length;
-			//for (int count = 0; count < length; count++)
-			//{
-			//    if (d < *(prtCumProbArrayStart + count))
-			//    {
-			//        return count + 1;
-			//    }
-			//}
-            
-			//int toReturn=(from x in Enumerable.Range(0,cumProbs.Length) where d < cumProbs[x] select x).First()+1;
-			//return toReturn;
 			throw new Exception ("Problem with population cumulative ability array");
 		}
 
-		public void CreateCumulativeProbs ()
+		protected void CreateCumulativeProbs ()
 		{
-
-			DoubleArray da = DoubleArray.From (ClassProbabilities);
-			cumProbs = da.CumSum (DimOp.OverCol).ToArray ();
-
+            cumProbs[0] = _pClassProbabilities[0];
+            for(int i=1;i<_pClassProbabilities.Length;i++)
+            {
+                cumProbs[i] = _pClassProbabilities[i] + cumProbs[i - 1];
+            }
 		}
+        /// <summary>
+        /// Overwrite the values in the existing array instead of copying and allocating.
+        /// </summary>
+        /// <param name="probs"></param>
+        public void SetProb(double[] probs)
+        {
+            if (probs.Length != _pClassProbabilities.Length)
+            {
+                throw new Exception("Cannot set an unequal array!");
+            }
+            for (int i = 0; i < probs.Length; i++)
+                _pClassProbabilities[i] = probs[i];
+            CreateCumulativeProbs();
+        }
 		//Fitness is s, where s is (r0+s)/r0;
 		public int AssignFitnessToBin (double W)
 		{
@@ -144,30 +158,12 @@ namespace PopulationSimulator
 
 		public void SetDFEasPointMass (int IndexToSet)
 		{
-			ClassProbabilities = new double[ClassProbabilities.Length];
-			ClassProbabilities [IndexToSet] = 1.0;
+			_pClassProbabilities = new double[ClassProbabilities.Length];
+			_pClassProbabilities [IndexToSet] = 1.0;
 			CreateCumulativeProbs ();
 			PointMass = true;
 			PointMassGroup = IndexToSet + 1;
-		}
-
-		public void UpdateWithNewSamplesOLD (List<ObservedWell> AugmentedData)
-		{
-			//First to count up all the types.
-			//DoubleArray countstmp=DoubleArray.Ones(NumberOfClassesIncludingNeutral-1);
-			//double[] counts=countstmp.ToArray();
-			//foreach(ObservedWell ow in AugmentedData)
-			//{
-			//    foreach(TimeFitnessClass tfc in ow.CurrentMissingData)
-			//    {
-			//        counts[tfc.Class-1]+=1.0;
-			//    }
-			//}
-			//Dirichlet d = new Dirichlet(counts);
-			//Vector v=d.Sample();
-			//ClassProbabilities = v.ToArray();
-			//CreateCumulativeProbs();
-		}
+		}		
 	}
 
 	public class DiscretizedLabelledDFE :DiscretizedDFE
@@ -191,51 +187,8 @@ namespace PopulationSimulator
 			}
 		}
 
-		/// <summary>
-		/// Returns a random bin for a mutation based on the
-		/// current parameter values, BIN NUMBER IS in 0 to 1 scheme
-		/// </summary>
-		/// <returns></returns>
-		public int GetRandomBinAssignment ()
-		{
-			double d = RandomVariateGenerator.NextDouble ();
-        
-			for (int i = 0; i < cumProbs.Length; i++) {
-				if (d < cumProbs [i])
-					return i + 1;
-			}
-			throw new Exception ("Problem with population cumulative ability array");
-		}
 
-		public void SetProb (double[] probs)
-		{
-			for (int i = 0; i < probs.Length; i++)
-				ClassProbabilities [i] = probs [i];
-			CreateCumulativeProbs ();
-		}
-
-		public void CreateCumulativeProbs ()
-		{
-
-			DoubleArray da = DoubleArray.From (ClassProbabilities);
-			cumProbs = da.CumSum (DimOp.OverCol).ToArray ();
-
-		}
-		//Fitness is s, where s is (r0+s)/r0;
-		public int AssignFitnessToBin (double W)
-		{
-			if (W < min) {
-				throw new Exception ("Can't assign below the min!");
-			}
-			W = W * PopulationSimulator.ANCESTRALGROWTHRATE;
-			var b = (from x in MidPoints
-			                  select Math.Abs (W - x)).ToList ();
-			var m = b.Min ();
-			int v = b.IndexOf (m);
-			//if (v == 0)
-			//    return 1;
-			//else
-			return v;
-		}
+		
+     
 	}
 }

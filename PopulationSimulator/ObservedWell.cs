@@ -32,11 +32,6 @@ namespace PopulationSimulator
             if (binClass != 1)
             { MutCounter.AddCountToClass(1, binClass); }
             PopSize = size;
-            //TimeFitnessClass fakeData = new TimeFitnessClass();
-           // fakeData.Class = binClass;
-            //fakeData.time = -1;//Shouldn't be used anyway
-           // CurrentMissingData.Add(fakeData);
-           // CurrentMissingData.Add(fakeData);
         }
     }
 }

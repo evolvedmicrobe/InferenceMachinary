@@ -20,8 +20,8 @@ namespace PopulationSimulator
         int curRep;
         void Initialize()
         {
-            //ObsData = DataCreator.CreateData();
-            ObsData = DataCreator.LoadData();
+            ObsData = DataCreator.CreateData();
+            //ObsData = DataCreator.LoadData();
             dfe = DataCreator.dfe;
             mu = new BeneficialMutationRate();   
         }
@@ -103,6 +103,8 @@ namespace PopulationSimulator
                     dfe.UpdateWithNewSamples(ObsData);
                 }
                 Parallel.ForEach(ObsData, po,x => ps.SimulateWell(x));
+                //ObsData.ForEach(x => ps.SimulateWell(x));
+                
                 if (curRep % 5 == 0)
                 { OutputState(); }
                 if(curRep%5==0)

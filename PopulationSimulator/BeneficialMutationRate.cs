@@ -22,8 +22,8 @@ namespace PopulationSimulator
 			double dif = totalTime - totTime2;
 			double percDif = dif / totalTime;
 			//Sample a new mu
-			//Gamma is parameterized with shape and scale
-            rate = RandomVariateGenerator.GammaSample(priorAlpha + totalMutations, 1.0 / (priorBeta + totTime2));
+			//Gamma is parameterized with shape and rate (rate = 1/scale)
+            rate = RandomVariateGenerator.GammaSample(priorAlpha + totalMutations, (priorBeta + totTime2));
             //Former code from Infer.Net, took shape and scale.            
 			//rate = Gamma.Sample (priorAlpha + totalMutations, 1.0 / (priorBeta + totTime2));
 		}
