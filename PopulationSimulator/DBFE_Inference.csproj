@@ -41,21 +41,18 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BeneficialMutationRate.cs" />
+    <Compile Include="ModelParameters\BeneficialMutationRate.cs" />
     <Compile Include="CollectionOfData.cs" />
-    <Compile Include="CreateData.cs" />
+    <Compile Include="DataSimulation\CreateData.cs" />
+    <Compile Include="DataSimulation\EvolvingPopulation.cs" />
     <Compile Include="MutationCounter.cs" />
     <Compile Include="PerformanceExtensions.cs" />
-    <Compile Include="PopulationSimulator.cs" />
-    <Compile Include="DiscretizedDFE.cs" />
-    <Compile Include="GibbsSampler.cs" />
-    <Compile Include="RNG\MultinomialSampler.cs" />
+    <Compile Include="GibbsPopulationSimulator.cs" />
+    <Compile Include="ModelParameters\DiscretizedDFE.cs" />
+    <Compile Include="GibbsSamplerInferenceEngine.cs" />
     <Compile Include="ObservedWell.cs" />
     <Compile Include="Old\OlderCode.cs" />
     <Compile Include="Old\OlderPopulationSimulator.cs" />
@@ -74,9 +71,7 @@
       <Name>Numerics</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DataSimulation\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

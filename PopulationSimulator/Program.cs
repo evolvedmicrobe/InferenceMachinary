@@ -18,14 +18,14 @@ namespace PopulationSimulator
         {
            // PosteriorSimulations2();
             //RunSimulations();
-            GibbsSampler gs;
+            GibbsSamplerInferenceEngine gs;
             if (args.Length > 0)
             {
-                gs = new GibbsSampler(args[0], Convert.ToDouble(args[1]));
+                gs = new GibbsSamplerInferenceEngine(args[0], Convert.ToDouble(args[1]));
             }
             else
             {
-                gs = new GibbsSampler();
+                gs = new GibbsSamplerInferenceEngine();
             }
             gs.Run();
         }
@@ -47,8 +47,8 @@ namespace PopulationSimulator
             SW.WriteLine("Time");
             for (int reps = 0; reps < 10000; reps++)
             {
-                PopulationSimulator.EvolvingPopulation EP;
-                EP = new PopulationSimulator.EvolvingPopulation(dfe, pop, mu);
+                EvolvingPopulation EP;
+                EP = new EvolvingPopulation(dfe, pop, mu);
                 int i = 0;
                 while (true)
                 {
@@ -89,8 +89,8 @@ namespace PopulationSimulator
                 
             for (int reps = 0; reps < 10000; reps++)
             {
-                PopulationSimulator.EvolvingPopulation EP;
-                EP = new PopulationSimulator.EvolvingPopulation(dfe, pop, mu);
+                EvolvingPopulation EP;
+                EP = new EvolvingPopulation(dfe, pop, mu);
                 int newStart = dfe.MidPoints.Length / 2;
                 double HalfPop = EP.PopSizes[0] / 2;
                 EP.PopSizes[0] = HalfPop;
@@ -111,8 +111,7 @@ namespace PopulationSimulator
                 }
                 double size2 = EP.PopSizes.Sum();
                 double[] freqs2 = EP.PopSizes.ElementDivide(size2);
-                MultinomialSampler ms = new MultinomialSampler(freqs2);
-                int sample = ms.GetRandomSample();
+                int sample = RandomVariateGenerator.GetMultinomialSample(freqs2);
                 double EndW = EP.popRelativeFitnesses[sample] / Math.Log(2) ;
 
                 SW.Write(string.Join(",", Res.Select(x => x.ToString())) +","+ EndW.ToString()+"\n");
@@ -153,7 +152,7 @@ namespace PopulationSimulator
                 {
                 //    int i = 10;
                     double curW = dfe.MidPoints[i] / Math.Log(2);
-                    PopulationSimulator psim = new PopulationSimulator(dfe, mu);
+                    GibbsPopulationSimulator psim = new GibbsPopulationSimulator(dfe, mu);
                     dfe.SetDFEasPointMass(i - 1);
                     foreach (PopulationSize ps in sizes)
                     {

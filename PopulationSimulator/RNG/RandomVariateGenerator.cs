@@ -29,5 +29,22 @@ namespace PopulationSimulator
         {
             return Dirichlet.Sample(MT.Value, alphas);
         }
+
+        public static int GetMultinomialSample(double[] probabilities)
+        {
+            double d = RandomVariateGenerator.NextDouble();
+            double cumSum = probabilities[0];
+            int i = 0;
+            do
+            {
+                if (d < cumSum) { return i; }
+                i++;
+                cumSum += probabilities[i];
+
+            }
+            while (i < probabilities.Length);
+            throw new Exception("Probability in multinomial sampler was goofed!");
+            
+        }
     }
 }

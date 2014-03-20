@@ -8,7 +8,7 @@ using System.IO;
 
 namespace PopulationSimulator
 {
-    public class GibbsSampler
+    public class GibbsSamplerInferenceEngine
     {
         StreamWriter SW;
         List<OutputColumn> OutputColumns;
@@ -16,12 +16,12 @@ namespace PopulationSimulator
         public DiscretizedDFE dfe;
         List<ObservedWell> ObsData;
         const string SEPERATOR = "\t";
-        PopulationSimulator ps;
+        GibbsPopulationSimulator ps;
         int curRep;
         void Initialize()
         {
-            ObsData = DataCreator.CreateData();
-            //ObsData = DataCreator.LoadData();
+            //ObsData = DataCreator.CreateData();
+            ObsData = DataCreator.LoadData();
             dfe = DataCreator.dfe;
             mu = new BeneficialMutationRate();   
         }
@@ -74,12 +74,12 @@ namespace PopulationSimulator
         /// </summary>
         /// <param name="outputName"></param>
         /// <param name="StartRate"></param>
-        public GibbsSampler(string outputName="Results.Log", double StartRate=7.5e-8)
+        public GibbsSamplerInferenceEngine(string outputName="Results.Log", double StartRate=7.5e-8)
         {
             Initialize();
             initRate = StartRate;
             InitializeOutput(outputName);
-            ps=new PopulationSimulator(dfe,mu);
+            ps=new GibbsPopulationSimulator(dfe,mu);
         }
         public void Run()
         {   
@@ -120,10 +120,7 @@ namespace PopulationSimulator
             }
             SW.Close();
         }
-        public void SampleFreqs()
-        {
-            
-        }
+        
         public delegate double ValueGetter();
         public sealed class OutputColumn
         {

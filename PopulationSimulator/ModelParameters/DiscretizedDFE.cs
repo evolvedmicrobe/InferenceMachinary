@@ -52,7 +52,7 @@ namespace PopulationSimulator
 		public DiscretizedDFE (double min, double max, int NumberBins)
 		{
 			this.min = min;
-			this.max = (1 + max) * PopulationSimulator.ANCESTRALGROWTHRATE;
+			this.max = (1 + max) * GibbsPopulationSimulator.ANCESTRALGROWTHRATE;
 			this.MidPoints = new double[NumberBins + 1];
 			_pClassProbabilities = new double[NumberBins];
 			cumProbs = new double[NumberBins];
@@ -64,14 +64,14 @@ namespace PopulationSimulator
 			}
 			//Now just get the actual growth rates
 			for (int i = 0; i < NumberBins + 1; i++) {
-				MidPoints [i] = PopulationSimulator.ANCESTRALGROWTHRATE + MidPoints [i] * PopulationSimulator.ANCESTRALGROWTHRATE;
+				MidPoints [i] = GibbsPopulationSimulator.ANCESTRALGROWTHRATE + MidPoints [i] * GibbsPopulationSimulator.ANCESTRALGROWTHRATE;
 			}       
 		}
 
 		public DiscretizedDFE (double max, int NumberBins)
 		{
 			//this.min = min;
-			this.max = (1 + max) * PopulationSimulator.ANCESTRALGROWTHRATE;
+			this.max = (1 + max) * GibbsPopulationSimulator.ANCESTRALGROWTHRATE;
 			this.MidPoints = new double[NumberBins + 1];
 			ClassProbabilities = new double[NumberBins];
 			double interval = max / NumberBins;
@@ -82,7 +82,7 @@ namespace PopulationSimulator
 			}
 			//Now just get the actual growth rates
 			for (int i = 0; i < NumberBins + 1; i++) {
-				MidPoints [i] = PopulationSimulator.ANCESTRALGROWTHRATE + MidPoints [i] * PopulationSimulator.ANCESTRALGROWTHRATE;
+				MidPoints [i] = GibbsPopulationSimulator.ANCESTRALGROWTHRATE + MidPoints [i] * GibbsPopulationSimulator.ANCESTRALGROWTHRATE;
 			}       
 		}
 
@@ -129,7 +129,7 @@ namespace PopulationSimulator
 			if (W < min) {
 				throw new Exception ("Can't assign below the min!");
 			}
-			W = W * PopulationSimulator.ANCESTRALGROWTHRATE;
+			W = W * GibbsPopulationSimulator.ANCESTRALGROWTHRATE;
 			var b = (from x in MidPoints
 			                  select Math.Abs (W - x)).ToList ();
 			var m = b.Min ();
