@@ -39,6 +39,9 @@ namespace PopulationSimulator
         /// <param name="well"></param>
 		public void SimulateWell (ObservedWell well)
 		{  
+#if DEBUG
+            int[] winners=new int[dfe.NumberOfClassesIncludingNeutral];
+#endif
 			int Winner = -1;
 			int NumSims = 0;
 			double gensBetweenTransfers = well.PopSize.GenerationsInBetweenTransfers;
@@ -51,6 +54,10 @@ namespace PopulationSimulator
 				Winner = EP.SamplePopulation ();
 				Interlocked.Increment (ref TotalSimulationsCounter);
 				NumSims += 1;
+#if DEBUG
+                winners[Winner]++;
+#endif
+
 			} while (Winner != well.binClass);
 			//well.CurrentMissingData = EP.Mutations;
 			well.AmountOfTimeLastRun = EP.TotalTime;

@@ -20,8 +20,8 @@ namespace PopulationSimulator
         int curRep;
         void Initialize()
         {
-            ObsData = DataCreator.CreateData();
-            //ObsData = DataCreator.LoadData();
+            //ObsData = DataCreator.CreateData();
+            ObsData = DataCreator.LoadData();
             dfe = DataCreator.dfe;
             mu = new BeneficialMutationRate();   
         }
@@ -74,8 +74,9 @@ namespace PopulationSimulator
         /// </summary>
         /// <param name="outputName"></param>
         /// <param name="StartRate"></param>
-        public GibbsSamplerInferenceEngine(string outputName="Results.Log", double StartRate=7.5e-8)
+        public GibbsSamplerInferenceEngine(string outputName="Results.Log",double StartRate=4e-7)//) double StartRate=7.5e-8)
         {
+            //7.5e-8 was what I used before
             Initialize();
             initRate = StartRate;
             InitializeOutput(outputName);
@@ -86,10 +87,10 @@ namespace PopulationSimulator
             int reps = 10000000;
 
             //TODO: Pseudo counts were added here, presumably to give some mass in the bottom?
-            ObsData[0].MutCounter.AddCountToClass(30, 1);
-            ObsData[0].MutCounter.AddCountToClass(30, 2);
+            //ObsData[0].MutCounter.AddCountToClass(30, 1);
+            //ObsData[0].MutCounter.AddCountToClass(30, 2);
             ///Sample a new multinomial from a direchlet based on these values
-            dfe.UpdateWithNewSamples(ObsData);           
+            //dfe.UpdateWithNewSamples(ObsData);           
             mu.rate = initRate;
             DateTime dt = DateTime.Now;
             ParallelOptions po = new ParallelOptions();

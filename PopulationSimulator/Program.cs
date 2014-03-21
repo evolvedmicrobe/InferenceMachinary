@@ -5,7 +5,7 @@ using System.Text;
 using System.IO;
 using System.Threading.Tasks;
 using System.Threading;
-
+using PopulationSimulator.DataSimulation;
 namespace PopulationSimulator
 {
     class Program
@@ -16,6 +16,7 @@ namespace PopulationSimulator
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            BasicSimulator.SimulateData();
            // PosteriorSimulations2();
             //RunSimulations();
             GibbsSamplerInferenceEngine gs;

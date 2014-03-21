@@ -19,7 +19,6 @@ namespace PopulationSimulator
         double LogrelativePopIncrease;
         double InvRelativePopIncrease;
         public double TotalTime = 0;
-        ObservedWell currentWell;
         DiscretizedDFE dfe;
         BeneficialMutationRate mu;
         public MutationCounter MutCounter;
@@ -39,21 +38,8 @@ namespace PopulationSimulator
             MutCounter = new MutationCounter(dfe);
         }
 
-        public EvolvingPopulation(DiscretizedDFE dfe, ObservedWell well, BeneficialMutationRate mu)
-        {
-            PopSizes = new double[dfe.NumberOfClassesIncludingNeutral];
-            popRelativeFitnesses = new double[dfe.MidPoints.Length];
-            dfe.MidPoints.CopyTo(popRelativeFitnesses, 0);
-            LogrelativePopIncrease = Math.Log(well.PopSize.NF / well.PopSize.N0);
-            InvRelativePopIncrease = well.PopSize.N0 / well.PopSize.NF;
-            PopSizes[0] = well.PopSize.N0;
-            N0 = well.PopSize.N0;
-            NF = well.PopSize.NF;
-            currentWell = well;
-            this.mu = mu;
-            this.dfe = dfe;
-            MutCounter = new MutationCounter(dfe);
-        }
+        public EvolvingPopulation(DiscretizedDFE dfe, ObservedWell well, BeneficialMutationRate mu) :this(dfe,well.PopSize,mu)
+        {}
 
         /// <summary>
         /// Advance through one transfer
@@ -70,6 +56,7 @@ namespace PopulationSimulator
             double GrowthTime = Math.Log(NF / curPopSize) / (meanFitnessStart);
             //First Handle Mutations
             double[] newMuts = new double[PopSizes.Length];
+            
             //double[] FinalPopSize = PopSizes.ElementMultiply(popRelativeFitnesses.ElementMultiply(GrowthTime).Exp());
             double[] FinalPopSize = PerformanceExtensions.Element_A_Times_E_ToThe_RT(PopSizes,popRelativeFitnesses,GrowthTime);
             
@@ -208,6 +195,7 @@ namespace PopulationSimulator
                     }
                 }
             }
+
             double[] Freqs = PopSizes.ElementDivide(NF);
 
             //Now combine the new mutants with the deterministic growth
@@ -222,7 +210,7 @@ namespace PopulationSimulator
             for (int i = 0; i < PopSizes.Length; i++)
             {
                 if (PopSizes[i] > 0)
-                {//PopSizes[i]=Poisson.Sample(expectNumber[i]);     
+                {     
                     PopSizes[i] = RandomVariateGenerator.PoissonSample(expectNumber[i]);
                 }
             }

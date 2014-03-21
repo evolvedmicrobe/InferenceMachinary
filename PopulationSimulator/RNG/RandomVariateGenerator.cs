@@ -12,6 +12,9 @@ namespace PopulationSimulator
     {
         //public static MersenneTwister MT = new MersenneTwister(Guid.NewGuid().GetHashCode(), true);
         //see https://github.com/mathnet/mathnet-numerics/issues/200
+        /// <summary>
+        /// Thread save random variable generator.
+        /// </summary>
         public static ThreadLocal<MersenneTwister> MT = new ThreadLocal<MersenneTwister>(() => new MersenneTwister(false));
         public static double NextDouble() {
             return MT.Value.NextDouble();
@@ -45,6 +48,10 @@ namespace PopulationSimulator
             while (i < probabilities.Length);
             throw new Exception("Probability in multinomial sampler was goofed!");
             
+        }
+        public static double ExponentialSample(double mean)
+        {
+            return Exponential.Sample(MT.Value,1/mean);
         }
     }
 }

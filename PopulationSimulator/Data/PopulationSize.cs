@@ -25,5 +25,11 @@ namespace PopulationSimulator
             this.GenerationsInBetweenTransfers = Math.Log(nf / n0, 2.0);
 
         }
+
+        #region STATIC
+        public static PopulationSize LargePopFromExperiment = new PopulationSize(3.95e6, 2.53e8);
+        public static PopulationSize SmallPopFromExperiment = new PopulationSize(1.03e4, 4.22e7);
+        public static int ExperimentTransferNumber = 21;
+        #endregion
     }
 }
