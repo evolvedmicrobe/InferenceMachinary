@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
+# Visual Studio 2012
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBFE_Inference", "PopulationSimulator\DBFE_Inference.csproj", "{B12B2BA4-D96E-47AE-A3D7-2A40B9B18950}"
@@ -55,6 +55,11 @@ Global
 		{B7CAE5F4-A23F-4438-B5BE-41226618B695}.Release-Signed|Mixed Platforms.ActiveCfg = Release-Signed|Any CPU
 		{B7CAE5F4-A23F-4438-B5BE-41226618B695}.Release-Signed|Mixed Platforms.Build.0 = Release-Signed|Any CPU
 		{B7CAE5F4-A23F-4438-B5BE-41226618B695}.Release-Signed|x86.ActiveCfg = Release-Signed|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = PopulationSimulator\DBFE_Inference.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
