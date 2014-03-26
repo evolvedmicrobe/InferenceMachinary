@@ -11,7 +11,7 @@ namespace PopulationSimulator
         public PopulationSize PopSize;
         public double TotalTransfers;
         public double ObservedFitness;
-        public double AmountOfTimeLastRun = 0;
+        public double AmountOfTimeLastRun;
         public int NumberOfSimulationsLastRun = 0;
         /// <summary>
         /// A class that keeps track of all the mutations that have been observed in this well from each bin.

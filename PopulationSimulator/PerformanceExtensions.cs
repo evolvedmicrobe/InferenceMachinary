@@ -13,18 +13,7 @@ namespace PopulationSimulator
     /// </summary>
     public static class PerformanceExtensions
     {
-        public static double[] ElementMultiply(this double[] x, double[] y)
-        {
-            if (x.Length != y.Length)
-            { throw new Exception("Cannot Multiply Vectors of Unequal Length"); }
-            double[] toR = new double[x.Length];
-            for (int i = 0; i < x.Length; i++)
-            {
-                toR[i] = x[i] * y[i];
-            }
-            return toR;
-        }
-
+       
 
         /// <summary>
         /// Returns A*exp(r*t) as an array
@@ -52,6 +41,17 @@ namespace PopulationSimulator
             for (int i = 0; i < x.Length; i++)
             {
                 toR += x[i] * y[i];
+            }
+            return toR;
+        }
+        public static double[] ElementMultiply(this double[] x, double[] y)
+        {
+            if (x.Length != y.Length)
+            { throw new Exception("Cannot Multiply Vectors of Unequal Length"); }
+            double[] toR = new double[x.Length];
+            for (int i = 0; i < x.Length; i++)
+            {
+                toR[i] = x[i] * y[i];
             }
             return toR;
         }
@@ -136,6 +136,19 @@ namespace PopulationSimulator
             }
             return toR;
         }
+        /// <summary>
+        /// Equivalent to x+=y for each element
+        /// </summary>
+        /// <param name="?"></param>
+        public static void ElementAddInPlace(this double[] x, double[] y)
+        {
+            if (x.Length != y.Length)
+            { throw new Exception("Cannot Subtract and Sum Vectors of Unequal Length"); }
+            for (int i = 0; i < x.Length; i++)
+            {
+                x[i] += y[i];
+            }
+        }
         public static double[] ElementAdd(this double[] x, double y)
         {
             double[] toR = new double[x.Length];
@@ -148,7 +161,7 @@ namespace PopulationSimulator
         public static double[] ElementAdd(this double[] x, double[] y)
         {
             if (x.Length != y.Length)
-            { throw new Exception("Cannot Multiply Vectors of Unequal Length"); }
+            { throw new Exception("Cannot add vectors of Unequal Length"); }
             double[] toR = new double[x.Length];
             for (int i = 0; i < x.Length; i++)
             {

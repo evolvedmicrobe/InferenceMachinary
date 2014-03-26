@@ -25,6 +25,13 @@ namespace PopulationSimulator
             this.GenerationsInBetweenTransfers = Math.Log(nf / n0, 2.0);
 
         }
+        public double Ne
+        {
+            get
+            {
+                return N0 * Math.Log(2) * GenerationsInBetweenTransfers;
+            }
+        }
 
         #region STATIC
         public static PopulationSize LargePopFromExperiment = new PopulationSize(3.95e6, 2.53e8);

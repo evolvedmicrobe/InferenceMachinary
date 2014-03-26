@@ -12,15 +12,13 @@ namespace PopulationSimulator.DataSimulation
         public static void SimulateData()
         {
             DiscretizedDFE dfe = BasicSimulator.CreateDBFEFromTruncExponetialArray();
-            BeneficialMutationRate be = new BeneficialMutationRate();
-            be.rate = 9e-6;
             //now to simulate
             List<EvolvingPopulation> eps = new List<EvolvingPopulation>();
             ///Hacky at the moment, going to discretize
             for (int i = 0; i < 48; i++)
             {
-                eps.Add(new EvolvingPopulation(dfe, PopulationSize.LargePopFromExperiment, be));
-                eps.Add(new EvolvingPopulation(dfe, PopulationSize.SmallPopFromExperiment, be));
+                eps.Add(new EvolvingPopulation(dfe, PopulationSize.LargePopFromExperiment));
+                eps.Add(new EvolvingPopulation(dfe, PopulationSize.SmallPopFromExperiment));
             }
             for(int i=0;i<PopulationSize.ExperimentTransferNumber;i++)
             {

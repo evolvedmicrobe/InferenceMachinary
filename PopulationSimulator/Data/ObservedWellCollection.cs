@@ -32,12 +32,10 @@ namespace PopulationSimulator.Data
         List<ObservedWell>[] binnedWells;
         PopulationSize popSize;
         DiscretizedDFE dfe;
-        BeneficialMutationRate mu;
         int TotalSimsCounter = 0;
 
-        public ObservedWellCollection(List<ObservedWell> wells,DiscretizedDFE dfe,BeneficialMutationRate mu)
+        public ObservedWellCollection(List<ObservedWell> wells,DiscretizedDFE dfe)
         {
-            this.mu = mu;
             this.dfe = dfe;
             var popSizes=wells.Select(x=>x.PopSize).Distinct().ToList();
             if(popSizes.Count!=1) {
@@ -88,12 +86,15 @@ namespace PopulationSimulator.Data
             do
             {
 
-                EP = new EvolvingPopulation(dfe, popSize, mu);
+                EP = new EvolvingPopulation(dfe, popSize);
                 for (int i = 0; i < lTotalTransfers; i++)
                 {
                     EP.GrowOneCycle();
                 }
                 Winner = EP.SamplePopulation();
+#if DEBUG
+                winners[Winner]++;
+#endif		
                 //If there is still a simulation for this mutation class unaccounted for
                 if (curSimCounts[Winner] > 0)
                 {
@@ -106,7 +107,6 @@ namespace PopulationSimulator.Data
                         {
                             curSimCounts[Winner] = index;
                             Interlocked.Decrement(ref curTotal);
-
                             var toUpdate = binnedWells[Winner][index];
                             toUpdate.AmountOfTimeLastRun = EP.TotalTime;
                             toUpdate.MutCounter = EP.MutCounter;
@@ -115,12 +115,11 @@ namespace PopulationSimulator.Data
                     }
                 }
                 Interlocked.Increment(ref TotalSimsCounter);
+
                 //Goofy instruction, meant to be safe on locking, if the value is 0, then set it to zero and return the original value, meant to read
                 //the value in a thread safe way and ensure the compiler doesn't rmeove it.
             } while (Interlocked.CompareExchange(ref curTotal, 0, 0) > 0);				
-#if DEBUG
-                winners[Winner]++;
-#endif		
+
 			
 		}
 

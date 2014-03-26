@@ -16,13 +16,13 @@ namespace PopulationSimulator
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            BasicSimulator.SimulateData();
+            //BasicSimulator.SimulateData();
            // PosteriorSimulations2();
             //RunSimulations();
             GibbsSamplerInferenceEngine gs;
             if (args.Length > 0)
             {
-                gs = new GibbsSamplerInferenceEngine(args[0], Convert.ToDouble(args[1]));
+                gs = new GibbsSamplerInferenceEngine(args[0]);
             }
             else
             {
@@ -37,19 +37,16 @@ namespace PopulationSimulator
             //StreamWriter SW = new StreamWriter(@"D:\Dropbox\EvolutionExperimentDB\Analysis\TimeFor90PercFixation.csv");
             StreamWriter SW = new StreamWriter(@"C:\Users\Nigel\Documents\My Dropbox\EvolutionExperimentDB\Analysis\TimeFor90PercFixation.csv");
             PopulationSize ps = new PopulationSize(1.03e4, 4.22e7);
-            BeneficialMutationRate mu = new BeneficialMutationRate();
             DiscretizedDFE dfe = new DiscretizedDFE(.0625, .25, 7);
             double[] posteriorModeFreqs = new double[] { 2.661e-3, 5.757e-2, 6.036e-2, .533, .291, 5.373e-2, 1.726e-3 };
             posteriorModeFreqs = posteriorModeFreqs.Select(x => x / posteriorModeFreqs.Sum()).ToArray();
-            double rate = 4.08e-7;
-            mu.rate = rate;
             dfe.ClassProbabilities = posteriorModeFreqs;
             PopulationSize pop = ps;  
             SW.WriteLine("Time");
             for (int reps = 0; reps < 10000; reps++)
             {
                 EvolvingPopulation EP;
-                EP = new EvolvingPopulation(dfe, pop, mu);
+                EP = new EvolvingPopulation(dfe, pop);
                 int i = 0;
                 while (true)
                 {
@@ -75,12 +72,9 @@ namespace PopulationSimulator
             PopulationSize ps1 = new PopulationSize(3.95e6, 2.53e8);
             PopulationSize ps2 = new PopulationSize(1.03e4, 4.22e7);
             PopulationSize[] sizes = new PopulationSize[] { ps1, ps2 };
-            BeneficialMutationRate mu = new BeneficialMutationRate();
             DiscretizedLabelledDFE dfe=new DiscretizedLabelledDFE(.0625,.25,7);
             double[] posteriorModeFreqs=new double[]{2.661e-3,5.757e-2,6.036e-2,.533,.291,5.373e-2,1.726e-3};
             posteriorModeFreqs = posteriorModeFreqs.Select(x => x / posteriorModeFreqs.Sum()).ToArray();
-            double rate=4.08e-7;
-            mu.rate = rate;
             dfe.SetProb(posteriorModeFreqs);
             PopulationSize pop=ps2;
             string header = string.Join(",", Enumerable.Range(0, numberOfTransfers).Select(x => "Fitness" + Convert.ToString(x)));
@@ -91,7 +85,7 @@ namespace PopulationSimulator
             for (int reps = 0; reps < 10000; reps++)
             {
                 EvolvingPopulation EP;
-                EP = new EvolvingPopulation(dfe, pop, mu);
+                EP = new EvolvingPopulation(dfe, pop);
                 int newStart = dfe.MidPoints.Length / 2;
                 double HalfPop = EP.PopSizes[0] / 2;
                 EP.PopSizes[0] = HalfPop;
@@ -145,15 +139,12 @@ namespace PopulationSimulator
 
                 PopulationSize[] sizes = new PopulationSize[] { ps1, ps2 };
                 dfe = new DiscretizedDFE(.25, 20);
-                BeneficialMutationRate mu = new BeneficialMutationRate();
                 //double rate=1e-6;
-                mu.rate = rate;
-                Console.WriteLine(rate.ToString());
                 for (int i = 1; i < dfe.NumberOfClassesIncludingNeutral; i++)
                 {
                 //    int i = 10;
                     double curW = dfe.MidPoints[i] / Math.Log(2);
-                    GibbsPopulationSimulator psim = new GibbsPopulationSimulator(dfe, mu);
+                    GibbsPopulationSimulator psim = new GibbsPopulationSimulator(dfe);
                     dfe.SetDFEasPointMass(i - 1);
                     foreach (PopulationSize ps in sizes)
                     {

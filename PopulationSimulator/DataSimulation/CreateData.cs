@@ -16,9 +16,9 @@ namespace PopulationSimulator
 			direc = @"D:\Dropbox\EvolutionExperimentDB\Analysis\";
 			direc = @"C:\Users\Nigel\Documents\My Dropbox\EvolutionExperimentDB\Analysis\";
 			//string file = direc + "FitnessesFixed2.csv";
-			//string file=@"C:\Users\Nigel\Documents\Dropbox\EvolutionExperimentDB\InferenceMachinary\PopulationSimulator\bin\Release\SimulationResults.csv";
+			string file=@"C:\Users\Nigel\Documents\Dropbox\EvolutionExperimentDB\InferenceMachinary\PopulationSimulator\bin\Release\SimulationResults.csv";
 			//string file = @"/Users/ndelaney/Dropbox/EvolutionExperimentDB/InferenceMachinary/PopulationSimulator/bin/Release/SimulationResults.csv";
-            string file=@"D:\\Dropbox\EvolutionExperimentDB\InferenceMachinary\PopulationSimulator\bin\Release\SimulationResults.csv";
+            //string file=@"D:\\Dropbox\EvolutionExperimentDB\InferenceMachinary\PopulationSimulator\bin\Release\SimulationResults.csv";
 			
             StreamReader SR = new StreamReader (file);
 			string line;

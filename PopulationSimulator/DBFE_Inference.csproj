@@ -44,7 +44,7 @@
     <Compile Include="DataSimulation\BasicSimulator.cs" />
     <Compile Include="DataSimulation\TruncatedExponentialDBFE.cs" />
     <Compile Include="Data\ObservedWellCollection.cs" />
-    <Compile Include="ModelParameters\BeneficialMutationRate.cs" />
+    <Compile Include="Old\BeneficialMutationRate.cs" />
     <Compile Include="Data\CollectionOfData.cs" />
     <Compile Include="DataSimulation\CreateData.cs" />
     <Compile Include="DataSimulation\EvolvingPopulation.cs" />

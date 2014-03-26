@@ -13,7 +13,6 @@ namespace PopulationSimulator
     {
         StreamWriter SW;
         List<OutputColumn> OutputColumns;
-        public BeneficialMutationRate mu;
         public DiscretizedDFE dfe;
         //TODO: References here and in ObsDataCollection, consolidate and encapsulate.
         List<ObservedWell> ObsData;
@@ -26,11 +25,10 @@ namespace PopulationSimulator
             //ObsData = DataCreator.CreateData();
             ObsData = DataCreator.LoadData();
             dfe = DataCreator.dfe;
-            mu = new BeneficialMutationRate();
             ObsDataCollection=new List<ObservedWellCollection>(2);
             foreach (var g in ObsData.GroupBy(z => z.PopSize))
             {
-                ObsDataCollection.Add(new ObservedWellCollection(g.ToList(), dfe, mu));
+                ObsDataCollection.Add(new ObservedWellCollection(g.ToList(), dfe));
             }
         }
         double GetClassProbability(int i)
@@ -43,7 +41,7 @@ namespace PopulationSimulator
             OutputColumns = new List<OutputColumn>();
             OutputColumns.Add(new OutputColumn("State",()=>this.curRep));
             OutputColumns.Add(new OutputColumn("TotalSimulations", () => this.ps.TotalSimulationsCounter));
-            OutputColumns.Add(new OutputColumn("Rate", () => this.mu.rate));
+            OutputColumns.Add(new OutputColumn("Rate", () => this.dfe.BeneficialMutationRate));
             for (int i = 0; i < dfe.ClassProbabilities.Length; i++)
             {
                 int j = i;
@@ -76,19 +74,17 @@ namespace PopulationSimulator
             SW.WriteLine(string.Join(SEPERATOR,OutputColumns.Select(x=>x.outFunc().ToString())));
             SW.Flush();
         }
-        private double initRate = 7.5e-8;
         /// <summary>
         /// Initialize a new gibbs sampler.
         /// </summary>
         /// <param name="outputName"></param>
         /// <param name="StartRate"></param>
-        public GibbsSamplerInferenceEngine(string outputName="Results.Log",double StartRate=4e-7)//) double StartRate=7.5e-8)
+        public GibbsSamplerInferenceEngine(string outputName="Resultsv2.Log")//) double StartRate=7.5e-8)
         {
             //7.5e-8 was what I used before
             Initialize();
-            initRate = StartRate;
             InitializeOutput(outputName);
-            ps=new GibbsPopulationSimulator(dfe,mu);
+            ps=new GibbsPopulationSimulator(dfe);
         }
         public void Run()
         {   
@@ -99,16 +95,11 @@ namespace PopulationSimulator
             //ObsData[0].MutCounter.AddCountToClass(30, 2);
             ///Sample a new multinomial from a direchlet based on these values
             //dfe.UpdateWithNewSamples(ObsData);           
-            mu.rate = initRate;
+            dfe.InitializeWithObservedData(ObsData);
             DateTime dt = DateTime.Now;
-            int processorCount= Environment.ProcessorCount *2;
+            int processorCount = 1;// Environment.ProcessorCount * 2;
             for (curRep = 0; curRep< reps; curRep++)
-            {
-                if (curRep > 0)
-                {
-                    mu.SampleRate(ObsData);
-                    dfe.UpdateWithNewSamples(ObsData);
-                }
+            {               
                 foreach (var odc in ObsDataCollection)
                 {
                     odc.Simulate(processorCount*2);
@@ -121,6 +112,7 @@ namespace PopulationSimulator
                     Console.WriteLine(ts.TotalMinutes+" Minutes per 5 states");
                     dt = DateTime.Now;
                 }
+                dfe.UpdateWithNewSamples(ObsData);
                
             }
             SW.Close();
