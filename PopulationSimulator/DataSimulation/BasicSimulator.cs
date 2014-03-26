@@ -11,10 +11,9 @@ namespace PopulationSimulator.DataSimulation
     {
         public static void SimulateData()
         {
-            TruncatedExponentialDBFE te = new TruncatedExponentialDBFE(.02, .2);
             DiscretizedDFE dfe = BasicSimulator.CreateDBFEFromTruncExponetialArray();
             BeneficialMutationRate be = new BeneficialMutationRate();
-            be.rate = 4e-7;
+            be.rate = 9e-6;
             //now to simulate
             List<EvolvingPopulation> eps = new List<EvolvingPopulation>();
             ///Hacky at the moment, going to discretize
@@ -47,7 +46,7 @@ namespace PopulationSimulator.DataSimulation
         }
         public static DiscretizedDFE CreateDBFEFromTruncExponetialArray()
         {
-            TruncatedExponentialDBFE te = new TruncatedExponentialDBFE(.02, .2);
+            TruncatedExponentialDBFE te = new TruncatedExponentialDBFE(.04, .2);
             DiscretizedDFE dfe = new DiscretizedDFE(.2, 20);
             //Simulate several draws from this distribution, then load it in to the DBFE
             var simRes = Enumerable.Range(0, 10000).Select(x => dfe.AssignFitnessToBin(1 + te.Sample())).GroupBy(x => x).Select(z => new { Index = z.Key, Count = (double)z.Count() }).ToDictionary(b => b.Index, q => q.Count);

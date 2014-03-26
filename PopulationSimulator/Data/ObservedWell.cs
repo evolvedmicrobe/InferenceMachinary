@@ -18,7 +18,10 @@ namespace PopulationSimulator
         /// Used to update the prior.
         /// </summary>
         public MutationCounter MutCounter;
-        public int binClass;
+        /// <summary>
+        /// 0 is the neutral class.
+        /// </summary>
+        public readonly int BinClass;
         public double TotalGenerations
         {
             get { return this.TotalTransfers * this.PopSize.GenerationsInBetweenTransfers; }
@@ -27,10 +30,10 @@ namespace PopulationSimulator
         {
             this.TotalTransfers = Transfers;
             this.ObservedFitness = W;
-            binClass= dfe.AssignFitnessToBin(W);
+            BinClass= dfe.AssignFitnessToBin(W);
             MutCounter = new MutationCounter(dfe);
-            if (binClass != 1)
-            { MutCounter.AddCountToClass(1, binClass); }
+            if (BinClass != 1)
+            { MutCounter.AddCountToClass(1, BinClass); }
             PopSize = size;
         }
     }

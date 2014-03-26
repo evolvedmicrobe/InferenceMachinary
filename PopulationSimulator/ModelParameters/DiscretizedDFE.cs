@@ -98,8 +98,8 @@ namespace PopulationSimulator
 			for (int i = 0; i < cumProbs.Length; i++) {
 				if (d < cumProbs [i])
 					return i + 1;
-			}
-			throw new Exception ("Problem with population cumulative ability array");
+			}            
+			throw new Exception ("Problem with population cumulative ability array:" +d.ToString());
 		}
 
 		protected void CreateCumulativeProbs ()

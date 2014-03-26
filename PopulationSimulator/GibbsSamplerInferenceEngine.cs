@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.IO;
+using PopulationSimulator.Data;
 
 namespace PopulationSimulator
 {
@@ -14,7 +15,9 @@ namespace PopulationSimulator
         List<OutputColumn> OutputColumns;
         public BeneficialMutationRate mu;
         public DiscretizedDFE dfe;
+        //TODO: References here and in ObsDataCollection, consolidate and encapsulate.
         List<ObservedWell> ObsData;
+        List<ObservedWellCollection> ObsDataCollection;
         const string SEPERATOR = "\t";
         GibbsPopulationSimulator ps;
         int curRep;
@@ -23,7 +26,12 @@ namespace PopulationSimulator
             //ObsData = DataCreator.CreateData();
             ObsData = DataCreator.LoadData();
             dfe = DataCreator.dfe;
-            mu = new BeneficialMutationRate();   
+            mu = new BeneficialMutationRate();
+            ObsDataCollection=new List<ObservedWellCollection>(2);
+            foreach (var g in ObsData.GroupBy(z => z.PopSize))
+            {
+                ObsDataCollection.Add(new ObservedWellCollection(g.ToList(), dfe, mu));
+            }
         }
         double GetClassProbability(int i)
         {
@@ -43,13 +51,13 @@ namespace PopulationSimulator
             }
 
             var PopSizes = (from x in ObsData select x.PopSize).Distinct();
-            var MutationTypes = (from x in ObsData select x.binClass).Distinct();
+            var MutationTypes = (from x in ObsData select x.BinClass).Distinct();
             List<OutputColumn> MutsCount = new List<OutputColumn>();
             foreach (var pop in PopSizes)
             {
                 foreach (var mut in MutationTypes)
                 {
-                    var data = (from x in ObsData where x.PopSize == pop & x.binClass == mut select x).ToList();
+                    var data = (from x in ObsData where x.PopSize == pop & x.BinClass == mut select x).ToList();
                     if (data.Count > 0)
                     {
                         CollectionOfData cdata = new CollectionOfData(data, "Pop-" + pop.TotalGrowth.ToString("E2") + "-" + mut.ToString());
@@ -93,9 +101,7 @@ namespace PopulationSimulator
             //dfe.UpdateWithNewSamples(ObsData);           
             mu.rate = initRate;
             DateTime dt = DateTime.Now;
-            ParallelOptions po = new ParallelOptions();
-            po.MaxDegreeOfParallelism = Environment.ProcessorCount * 2;
-           
+            int processorCount= Environment.ProcessorCount *2;
             for (curRep = 0; curRep< reps; curRep++)
             {
                 if (curRep > 0)
@@ -103,21 +109,19 @@ namespace PopulationSimulator
                     mu.SampleRate(ObsData);
                     dfe.UpdateWithNewSamples(ObsData);
                 }
-                Parallel.ForEach(ObsData, po,x => ps.SimulateWell(x));
-                //ObsData.ForEach(x => ps.SimulateWell(x));
-                
+                foreach (var odc in ObsDataCollection)
+                {
+                    odc.Simulate(processorCount*2);
+                }
                 if (curRep % 5 == 0)
                 { OutputState(); }
-                if(curRep%5==0)
+                if( curRep%5==0)
                 {
                     TimeSpan ts=DateTime.Now.Subtract(dt);
                     Console.WriteLine(ts.TotalMinutes+" Minutes per 5 states");
                     dt = DateTime.Now;
                 }
-                else if (curRep % 5 == 0)
-                {
-                    Console.WriteLine(mu.rate.ToString());
-                }
+               
             }
             SW.Close();
         }
